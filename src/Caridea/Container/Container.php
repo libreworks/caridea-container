@@ -28,7 +28,7 @@ namespace Caridea\Container;
 interface Container
 {
     /**
-     * Whether this container contains a component with the given name.
+     * Whether this container or its parent contains a component with the given name.
      *
      * @param string $name The component name
      * @return boolean
@@ -36,7 +36,7 @@ interface Container
     function contains($name);
 
     /**
-     * Whether this container contains a component with the given type.
+     * Whether this container or its parent contains a component with the given type.
      * 
      * @param \Caridea\Reflect\Type|string $type A Type or the name of a class
      * @return boolean
@@ -44,15 +44,22 @@ interface Container
     function containsType($type);
 
     /**
-     * Gets the component by name.
+     * Gets a component by name.
+     * 
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
      * 
      * @param string $name The component name
-     * @return object The component or null if the name isn't registered
+     * @return mixed The component or null if the name isn't registered
      */
     function get($name);
 
     /**
      * Gets the components in the contanier for the given type.
+     * 
+     * The parent container is called first, then any values of this container
+     * are appended to the array. Values in this container supercede any with
+     * duplicate names in the parent.
      *
      * @param \Caridea\Reflect\Type|string $type A Type or string class name
      * @return array keys are component names, values are components themselves
@@ -60,7 +67,7 @@ interface Container
     function getByType($type);
 
     /**
-     * Gets all registered component names.
+     * Gets all registered component names (excluding any in the parent container).
      *
      * @return array of strings
      */
@@ -75,6 +82,9 @@ interface Container
 
     /**
      * Gets the type of component with the given name.
+     * 
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
      * 
      * @param string $name The component name
      * @return \Caridea\Reflect\Type The component type
