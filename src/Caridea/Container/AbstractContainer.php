@@ -80,10 +80,10 @@ abstract class AbstractContainer implements Container
 
     public function getByType($type)
     {
-        $components = $this->parent ? $this->parent->getByType($type) : [];
         if ($type === null) {
-            return false;
+            return [];
         }
+        $components = $this->parent ? $this->parent->getByType($type) : [];
         $isObject = !in_array($type, self::$PRIMATIVES, true);
         foreach ($this->types as $name => $ctype) {
             if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {

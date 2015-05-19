@@ -49,6 +49,9 @@ class Provider
      */
     public function __construct($type, $factory, $singleton = true)
     {
+        if (!class_exists($type)) {
+            throw new \InvalidArgumentException('"type" parameter must be a class that exists');
+        }
         $this->type = \Caridea\Util\Arguments::checkBlank($type);
         if (!is_object($factory) || !method_exists($factory, '__invoke')) {
             throw new \InvalidArgumentException('"factory" parameter must be a Closure or an object with an __invoke method');

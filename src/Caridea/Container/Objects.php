@@ -76,6 +76,12 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
     protected function doGet($name)
     {
         $value = $this->providers[$name]->get($this);
+        $type = $this->types[$name];
+        if (!($value instanceof $type)) {
+            throw new \UnexpectedValueException("The value that came from the "
+                . "provider was supposed to be a $type, but it returned a " 
+                . (is_object($value) ? get_class($value) : gettype($value)));
+        }
         if ($value instanceof \Caridea\Event\Listener) {
             // SplObjectStorage is a set; it will only ever contain uniques
             $this->listeners->attach($value);

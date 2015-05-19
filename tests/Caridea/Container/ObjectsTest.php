@@ -67,6 +67,36 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
         $object->publish($event);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage The value that came from the provider was supposed to be a SplQueue, but it returned a SplObjectStorage
+     */
+    public function testMismatch1()
+    {
+        $providers = [
+            'myQueue' => new Provider('SplQueue', function($c){
+                return new \SplObjectStorage();
+            })
+        ];
+        $object = new Objects($providers);
+        $object->get('myQueue');
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage The value that came from the provider was supposed to be a SplQueue, but it returned a string
+     */
+    public function testMismatch2()
+    {
+        $providers = [
+            'myQueue' => new Provider('SplQueue', function($c){
+                return "new \SplObjectStorage()";
+            })
+        ];
+        $object = new Objects($providers);
+        $object->get('myQueue');
+    }
+    
     public function notify(\Caridea\Event\Event $event)
     {
         $this->assertNotNull($event);

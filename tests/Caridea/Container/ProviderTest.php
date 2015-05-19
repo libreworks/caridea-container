@@ -83,4 +83,13 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     {
         new Provider('SplObjectStorage', null);
     }
+    
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage "type" parameter must be a class that exists
+     */
+    public function testConstructor3()
+    {
+        $p = new Provider('Caridea\\Container\\Foo', function($c){});
+    }
 }
