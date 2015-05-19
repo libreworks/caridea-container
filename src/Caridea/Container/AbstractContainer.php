@@ -19,8 +19,6 @@
  */
 namespace Caridea\Container;
 
-use Caridea\Reflect\Type;
-
 /**
  * Abstract dependency injection container.
  * 
@@ -34,14 +32,18 @@ abstract class AbstractContainer implements Container
      */
     protected $parent;
     /**
-     * @var \Caridea\Reflect\Type[] with string keys
+     * @var string[] with string keys
      */
     protected $types = [];
+    /**
+     * @var string[] the list of PHP native types
+     */
+    protected static $PRIMATIVES = ['array', 'bool', 'float', 'int', 'resource', 'string'];
     
     /**
      * Creates a new AbstractContainer.
      * 
-     * @param \Caridea\Reflect\Type[] $types with string keys
+     * @param string[] $types with string keys
      * @param \Caridea\Container\Container $parent The parent container
      */
     protected function __construct(array $types, Container $parent = null)
@@ -58,13 +60,16 @@ abstract class AbstractContainer implements Container
 
     public function containsType($type)
     {
-        $realType = Type::get($type);
+        if ($type === null) {
+            return false;
+        }
+        $isObject = !in_array($type, self::$PRIMATIVES, true);
         foreach ($this->types as $ctype) {
-            if ($realType->isSuperclassOf($ctype)) {
+            if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
                 return true;
             }
         }
-        return $this->parent ? $this->parent->containsType($realType) : false;
+        return $this->parent ? $this->parent->containsType($type) : false;
     }
     
     public function get($name)
@@ -75,16 +80,19 @@ abstract class AbstractContainer implements Container
 
     public function getByType($type)
     {
-        $realType = Type::get($type);
-        $components = $this->parent ? $this->parent->getByType($realType) : [];
+        $components = $this->parent ? $this->parent->getByType($type) : [];
+        if ($type === null) {
+            return false;
+        }
+        $isObject = !in_array($type, self::$PRIMATIVES, true);
         foreach ($this->types as $name => $ctype) {
-            if ($realType->isSuperclassOf($ctype)) {
+            if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
                 $components[$name] = $this->doGet($name);
             }
         }
         return $components;
     }
-
+    
     /**
      * Retrieves the value
      * 

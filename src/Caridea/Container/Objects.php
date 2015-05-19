@@ -48,10 +48,10 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      *     'mail.host' => 'mail.example.net'
      * ]);
      * $objects = new \Caridea\Container\Objects([
-     *     'mailService' => new Provider(Type::get('\My\Mail\Service'), function($c){
+     *     'mailService' => new Provider('My\Mail\Service', function($c){
      *         return new \My\Mail\Service($c['mail.host']);
      *     }),
-     *     'userService' => new Provider(Type::get('\My\User\Service'), function($c){
+     *     'userService' => new Provider('My\User\Service', function($c){
      *         return new \My\User\Service($c['mailService']);
      *     })
      * ], $props);

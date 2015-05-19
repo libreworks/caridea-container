@@ -62,9 +62,9 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsType()
     {
-        $this->assertTrue($this->object->containsType('\SplQueue'));
+        $this->assertTrue($this->object->containsType('SplQueue'));
         $this->assertTrue($this->object->containsType('string'));
-        $this->assertFalse($this->object->containsType('\SplObjectStorage'));
+        $this->assertFalse($this->object->containsType('SplObjectStorage'));
     }
 
     /**
@@ -82,9 +82,9 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetByType()
     {
-        $this->assertEquals(['myQueue' => $this->instance], $this->object->getByType('\SplQueue'));
+        $this->assertEquals(['myQueue' => $this->instance], $this->object->getByType('SplQueue'));
         $this->assertEquals(['config.var' => 'foobar'], $this->object->getByType('string'));
-        $this->assertEquals([], $this->object->getByType('\SplObjectStorage'));
+        $this->assertEquals([], $this->object->getByType('SplObjectStorage'));
     }
 
     /**
@@ -109,8 +109,8 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetType()
     {
-        $this->assertEquals(\Caridea\Reflect\Type::get('\SplQueue'), $this->object->getType('myQueue'));
-        $this->assertEquals(\Caridea\Reflect\Type::get('string'), $this->object->getType('config.var'));
+        $this->assertEquals('SplQueue', $this->object->getType('myQueue'));
+        $this->assertEquals('string', $this->object->getType('config.var'));
         $this->assertNull($this->object->getType('notThere'));
     }
 }
@@ -122,7 +122,8 @@ class OneInstanceContainer extends \Caridea\Container\AbstractContainer
     public function __construct($name, $instance, $parent = null)
     {
         $this->instance = $instance;
-        parent::__construct([$name => \Caridea\Reflect\Type::of($instance)], $parent);
+        $type = gettype($instance);
+        parent::__construct([$name => $type == 'object' ? get_class($instance) : $type], $parent);
     }
     
     protected function doGet($name)

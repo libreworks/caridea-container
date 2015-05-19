@@ -33,20 +33,20 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
     {
         $providers = [
             'not.a.provider' => 123,
-            'myQueue' => new Provider(\Caridea\Reflect\Type::get('\SplQueue'), function($c){
+            'myQueue' => new Provider('SplQueue', function($c){
                 return new \SplQueue();
             }),
-            'secondArray' => new Provider(\Caridea\Reflect\Type::get('\ArrayObject'), function($c){
+            'secondArray' => new Provider('ArrayObject', function($c){
                 return new \ArrayObject([4, 5, 6]);
             }),
-            'myArray' => new Provider(\Caridea\Reflect\Type::get('\ArrayObject'), function($c){
+            'myArray' => new Provider('ArrayObject', function($c){
                 return new \ArrayObject([1, 2, 3]);
             })
         ];
         $object = new Objects($providers);
         $this->assertTrue($object->contains('myArray'));
-        $this->assertTrue($object->containsType(\Caridea\Reflect\Type::get('\SplQueue')));
-        $this->assertEquals(['secondArray' => new \ArrayObject([4, 5, 6]), 'myArray' => new \ArrayObject([1, 2, 3])], $object->getByType('\ArrayObject'));
+        $this->assertTrue($object->containsType('SplQueue'));
+        $this->assertEquals(['secondArray' => new \ArrayObject([4, 5, 6]), 'myArray' => new \ArrayObject([1, 2, 3])], $object->getByType('ArrayObject'));
     }
     
     /**
@@ -57,7 +57,7 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
     {
         $self = $this;
         $providers = [
-            'myListener' => new Provider(\Caridea\Reflect\Type::of($self), function($c) use($self){
+            'myListener' => new Provider(__CLASS__, function($c) use($self){
                 return $self;
             })
         ];

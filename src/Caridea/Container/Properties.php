@@ -57,11 +57,34 @@ class Properties extends AbstractContainer
         $types = [];
         foreach ($properties as $k => $v) {
             if ($v !== null) {
-                $types[(string)$k] = \Caridea\Reflect\Type::of($v);
+                $types[(string)$k] = self::typeof($v);
                 $this->values[(string)$k] = $v;
             }
         }
         parent::__construct($types, $parent);
+    }
+    
+    /**
+     * More predictable results than `gettype`.
+     * 
+     * @param mixed $v The value to evaluate
+     */
+    protected static function typeof($v)
+    {
+        if (is_bool($v)) {
+            return 'bool';
+        } else if (is_int($v)) {
+            return 'int';
+        } else if (is_float($v)) {
+            return 'float';
+        } else if (is_string($v)) {
+            return 'string';
+        } else if (is_array($v)) {
+            return 'array';
+        } else if (is_resource($v)) {
+            return 'resource';
+        }
+        return get_class($v);
     }
     
     protected function doGet($name)

@@ -39,7 +39,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         ];
         $object = new Properties($properties, null);
         $this->assertTrue($object->contains("config.host"));
-        $this->assertTrue($object->containsType("\DateTime"));
+        $this->assertTrue($object->containsType("DateTime"));
         $this->assertSame($properties['config.date'], $object->get('config.date'));
         $this->assertEquals(['config.host' => $properties['config.host'], 'config.user' => $properties['config.user']], $object->getByType('string'));
     }

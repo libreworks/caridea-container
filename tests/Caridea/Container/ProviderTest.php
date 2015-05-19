@@ -32,12 +32,11 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSingleton()
     {
-        $type = \Caridea\Reflect\Type::of('\ArrayObject');
+        $type = 'ArrayObject';
         $object = new Provider($type, function($c){
             return new \ArrayObject([1, 2, 3]);
         }, true);
-        $container = // Create a stub for the SomeClass class.
-        $stub = $this->getMockBuilder('\Caridea\Container\Container')
+        $stub = $this->getMockBuilder('Caridea\Container\Container')
                         ->getMock();
         $this->assertSame($type, $object->getType());
         $this->assertTrue($object->isSingleton());
@@ -54,12 +53,11 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrototype()
     {
-        $type = \Caridea\Reflect\Type::of('\ArrayObject');
+        $type = 'ArrayObject';
         $object = new Provider($type, function($c){
             return new \ArrayObject([1, 2, 3]);
         }, false);
-        $container = // Create a stub for the SomeClass class.
-        $stub = $this->getMockBuilder('\Caridea\Container\Container')
+        $stub = $this->getMockBuilder('Caridea\Container\Container')
                         ->getMock();
         $this->assertSame($type, $object->getType());
         $this->assertFalse($object->isSingleton());
@@ -74,7 +72,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor1()
     {
-        new Provider(\Caridea\Reflect\Type::of('\SplObjectStorage'), new \ArrayObject());
+        new Provider('SplObjectStorage', new \ArrayObject());
     }
     
     /**
@@ -83,6 +81,6 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor2()
     {
-        new Provider(\Caridea\Reflect\Type::of('\SplObjectStorage'), null);
+        new Provider('SplObjectStorage', null);
     }
 }

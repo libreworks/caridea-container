@@ -38,7 +38,7 @@ interface Container
     /**
      * Whether this container or its parent contains a component with the given type.
      * 
-     * @param \Caridea\Reflect\Type|string $type A Type or the name of a class
+     * @param string $type The name of a class or one of PHP's language types (bool, int, float, string, array, resource)
      * @return boolean
      */
     function containsType($type);
@@ -61,7 +61,7 @@ interface Container
      * are appended to the array. Values in this container supercede any with
      * duplicate names in the parent.
      *
-     * @param \Caridea\Reflect\Type|string $type A Type or string class name
+     * @param string $type The name of a class or one of PHP's language types (bool, int, float, string, array, resource)
      * @return array keys are component names, values are components themselves
      */
     function getByType($type);
@@ -87,7 +87,7 @@ interface Container
      * its parent.
      * 
      * @param string $name The component name
-     * @return \Caridea\Reflect\Type The component type
+     * @return string The component type, either a class name or one of PHP's language types (bool, int, float, string, array, resource)
      */
     function getType($name);
 }

@@ -32,7 +32,7 @@ class Provider
      */
     private $singleton = true;
     /**
-     * @var \Caridea\Reflect\Type
+     * @var string
      */
     private $type;
     /**
@@ -47,9 +47,9 @@ class Provider
     /**
      * @internal
      */
-    public function __construct(\Caridea\Reflect\Type $type, $factory, $singleton = true)
+    public function __construct($type, $factory, $singleton = true)
     {
-        $this->type = $type;
+        $this->type = \Caridea\Util\Arguments::checkBlank($type);
         if (!is_object($factory) || !method_exists($factory, '__invoke')) {
             throw new \InvalidArgumentException('"factory" parameter must be a Closure or an object with an __invoke method');
         }
@@ -86,7 +86,7 @@ class Provider
     }
 
     /**
-     * @return \Caridea\Reflect\Type gets the type of this instance
+     * @return string gets the type of this instance
      */
     public function getType()
     {
