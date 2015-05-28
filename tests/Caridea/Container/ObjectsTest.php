@@ -48,6 +48,14 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
         $this->assertTrue($object->containsType('SplQueue'));
         $this->assertEquals(['secondArray' => new \ArrayObject([4, 5, 6]), 'myArray' => new \ArrayObject([1, 2, 3])], $object->getByType('ArrayObject'));
     }
+
+    /**
+     * @covers Caridea\Container\Objects::builder
+     */
+    public function testBuilder()
+    {
+        $this->assertInstanceOf('Caridea\Container\Builder', Objects::builder());
+    }
     
     /**
      * @covers Caridea\Container\Objects::publish

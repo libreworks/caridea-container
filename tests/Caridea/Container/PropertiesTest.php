@@ -24,8 +24,21 @@ namespace Caridea\Container;
  */
 class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
+    protected $file;
+    
+    public function setUp()
+    {
+        $this->file = tmpfile();
+    }
+    
+    public function tearDown()
+    {
+        fclose($this->file);
+    }
+    
     /**
      * @covers \Caridea\Container\Properties::__construct
+     * @covers \Caridea\Container\Properties::typeof
      * @covers \Caridea\Container\AbstractContainer::__construct
      * @covers \Caridea\Container\Properties::doGet
      */
@@ -35,7 +48,11 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             'config.host' => 'db.example.net',
             'config.port' => 1337,
             'config.user' => 'nobody',
-            'config.date' => new \DateTime('2015-05-18')
+            'config.date' => new \DateTime('2015-05-18'),
+            'config.good' => true,
+            'config.perc' => 12.345,
+            'config.tags' => ['foo', 'bar'],
+            'config.file' => $this->file
         ];
         $object = new Properties($properties, null);
         $this->assertTrue($object->contains("config.host"));

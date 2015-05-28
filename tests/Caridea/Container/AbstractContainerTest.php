@@ -62,6 +62,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsType()
     {
+        $this->assertFalse($this->object->containsType(null));
         $this->assertTrue($this->object->containsType('SplQueue'));
         $this->assertTrue($this->object->containsType('string'));
         $this->assertFalse($this->object->containsType('SplObjectStorage'));
@@ -85,6 +86,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['myQueue' => $this->instance], $this->object->getByType('SplQueue'));
         $this->assertEquals(['config.var' => 'foobar'], $this->object->getByType('string'));
         $this->assertEquals([], $this->object->getByType('SplObjectStorage'));
+        $this->assertEquals([], $this->object->getByType(null));
     }
 
     /**
