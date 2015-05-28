@@ -20,7 +20,7 @@
 namespace Caridea\Container;
 
 /**
- * A concrete dependency injection container with event publishing capabilities.
+ * A concrete, immutable dependency injection container with event publishing capabilities.
  * 
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
@@ -28,37 +28,52 @@ namespace Caridea\Container;
 class Objects extends AbstractContainer implements \Caridea\Event\Publisher
 {
     /**
-     * @var \Caridea\Container\Provider[] with string keys
+     * @var \Caridea\Container\Provider[] Associative array of string names to providers
      */
     protected $providers = [];
     /**
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage A collection of event listeners
      */
     protected $listeners;
     
     /**
      * Creates a new Object container.
      * 
-     * You might find it easier to use the {@link Builder} instead of this
-     * constructor.
+     * You might find it easier to use the `Builder` instead of this
+     * constructor. Compare this first example…
      * 
-     * ```
-     * use \Caridea\Reflect\Type;
+     * ```php
      * $props = new \Caridea\Container\Properties([
      *     'mail.host' => 'mail.example.net'
      * ]);
      * $objects = new \Caridea\Container\Objects([
      *     'mailService' => new Provider('My\Mail\Service', function($c){
      *         return new \My\Mail\Service($c['mail.host']);
-     *     }),
+     *     }, true),
      *     'userService' => new Provider('My\User\Service', function($c){
      *         return new \My\User\Service($c['mailService']);
-     *     })
+     *     }, false)
      * ], $props);
      * ```
      * 
+     * …to this one:
+     * 
+     * ```php
+     * $props = new \Caridea\Container\Properties([
+     *     'mail.host' => 'mail.example.net'
+     * ]);
+     * $objects = \Caridea\Container\Objects::builder()
+     *     ->lazy('mailService', 'My\Mail\Service', function($c){
+     *         return new \My\Mail\Service($c['mail.host']);
+     *     })
+     *     ->proto('userService', 'My\User\Service', function($c){
+     *         return new \My\User\Service($c['mailService']);
+     *     })
+     *     ->build($props);
+     * ```
+     * 
      * @param \Caridea\Container\Provider[] $providers with names as keys
-     * @param \Caridea\Container\Container $parent
+     * @param \Caridea\Container\Container $parent An optional parent container
      */
     public function __construct(array $providers, Container $parent = null)
     {
@@ -71,6 +86,16 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
         }
         parent::__construct($types, $parent);
         $this->listeners = new \SplObjectStorage();
+    }
+    
+    /**
+     * Creates a new Builder.
+     * 
+     * @return \Caridea\Container\Builder A new `Objects` builder
+     */
+    public static function builder()
+    {
+        return new Builder();
     }
     
     protected function doGet($name)

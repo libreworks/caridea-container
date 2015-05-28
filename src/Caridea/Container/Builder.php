@@ -27,10 +27,110 @@ namespace Caridea\Container;
  */
 class Builder
 {
-    protected $types = [];
+    /**
+     * @var Provider[] Associative array of string names to `Provider` instances
+     */
     protected $providers = [];
+    /**
+     * @var Provider[] Array of eager `Provider`s
+     */
+    protected $eager = [];
     
-    public function getTypes();
+    /**
+     * Adds a new Provider.
+     * 
+     * This method exists only for completeness. You'd probably spend less
+     * effort if you call `->eager`, `->lazy`, or `->proto`.
+     * 
+     * @param string $name The component name
+     * @param \Caridea\Container\Provider $provider The provider
+     * @return $this provides a fluent interface
+     */
+    public function addProvider($name, Provider $provider)
+    {
+        $this->providers[$name] = $provider;
+        return $this;
+    }
     
-    public function getProviders();
+    /**
+     * Adds a singleton component to be instantiated after the container is.
+     * 
+     * ```php
+     * $builder->eager('foobar', 'Acme\Mail\Service', function($c) {
+     *     return new \Acme\Mail\Service($c['dependency']);
+     * });
+     * ```
+     * 
+     * @param string $name The component name
+     * @param string $type The class name of the component
+     * @param object $factory A `Closure` or class with an `__invoke` method to return the component
+     * @return $this provides a fluent interface
+     */
+    public function eager($name, $type, $factory)
+    {
+        $provider = new Provider($type, $factory);
+        $this->eager[] = $provider;
+        return $this->addProvider($name, $provider);
+    }
+    
+    /**
+     * Adds a singleton component to be instantiated on demand.
+     * 
+     * ```php
+     * $builder->lazy('foobar', 'Acme\Mail\Service', function($c) {
+     *     return new \Acme\Mail\Service($c['dependency']);
+     * });
+     * ```
+     * 
+     * @param string $name The component name
+     * @param string $type The class name of the component
+     * @param object $factory A `Closure` or class with an `__invoke` method to return the component
+     * @return $this provides a fluent interface
+     */
+    public function lazy($name, $type, $factory)
+    {
+        return $this->addProvider($name, new Provider($type, $factory));
+    }
+    
+    /**
+     * Adds a component that provides a new instance each time it's instantiated.
+     * 
+     * ```php
+     * $builder->lazy('objectStorage', 'SplObjectStorage', function($c) {
+     *     return new \SplObjectStorage();
+     * });
+     * ```
+     * 
+     * @param string $name The component name
+     * @param string $type The class name of the component
+     * @param object $factory A `Closure` or class with an `__invoke` method to return the component
+     * @return $this provides a fluent interface
+     */
+    public function proto($name, $type, $factory)
+    {
+        return $this->addProvider($name, new Provider($type, $factory, false));
+    }
+    
+    /**
+     * Builds a container using the settings called.
+     * 
+     * Any *eager* components will be instantiated at this time.
+     * 
+     * When this method is called, this builder is reset to its default state.
+     * 
+     * @param Container $parent An optional parent container
+     * @return Objects The constructed `Objects` container
+     */
+    public function build(Container $parent = null)
+    {
+        $container = new Objects($this->providers, $parent);
+        if ($this->eager) {
+            foreach ($this->eager as $v) {
+                $v->get($container);
+            }
+        }
+        $this->providers = [];
+        $this->eager = [];
+        return $container;
+    }
 }
