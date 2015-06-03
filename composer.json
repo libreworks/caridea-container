@@ -1,9 +1,20 @@
 {
     "name": "caridea/container",
+    "type": "library",
     "description": "A shrimp of a dependency injection library",
-    "version": "0.1.0-alpha",
+    "keywords": ["dependency injection", "di", "inversion of control", "ioc"],
+    "version": "0.1.0",
+    "homepage": "http://github.com/libreworks/caridea-container",
     "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Caridea Contributors",
+            "homepage": "https://github.com/libreworks/caridea-container/contributors"
+        }
+    ],
     "require": {
+        "php": ">=5.5.0",
+	"caridea/event": "0.1.0"
     },
     "autoload": {
         "psr-4": {
