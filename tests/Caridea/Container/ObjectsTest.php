@@ -54,7 +54,7 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
      */
     public function testBuilder()
     {
-        $this->assertInstanceOf('Caridea\Container\Builder', Objects::builder());
+        $this->assertInstanceOf(Builder::class, Objects::builder());
     }
     
     /**
@@ -71,7 +71,7 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
         ];
         $object = new Objects($providers);
         $object->get('myListener');
-        $event = $this->getMockBuilder('\Caridea\Event\Event')->setConstructorArgs([$this])->getMock();
+        $event = $this->getMockBuilder(\Caridea\Event\Event::class)->setConstructorArgs([$this])->getMock();
         $object->publish($event);
     }
 

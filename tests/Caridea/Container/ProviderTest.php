@@ -36,7 +36,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $object = new Provider($type, function($c){
             return new \ArrayObject([1, 2, 3]);
         }, true);
-        $stub = $this->getMockBuilder('Caridea\Container\Container')
+        $stub = $this->getMockBuilder(Container::class)
                         ->getMock();
         $this->assertSame($type, $object->getType());
         $this->assertTrue($object->isSingleton());
@@ -57,7 +57,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $object = new Provider($type, function($c){
             return new \ArrayObject([1, 2, 3]);
         }, false);
-        $stub = $this->getMockBuilder('Caridea\Container\Container')
+        $stub = $this->getMockBuilder(Container::class)
                         ->getMock();
         $this->assertSame($type, $object->getType());
         $this->assertFalse($object->isSingleton());

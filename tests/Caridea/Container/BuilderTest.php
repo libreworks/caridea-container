@@ -52,7 +52,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->object, 
             $this->object->addProvider('foobar', new Provider('SplObjectStorage', function(){return new \SplObjectStorage();}, false)));
         $container = $this->object->build($this->parent);
-        $this->assertInstanceOf('Caridea\Container\Objects', $container);
+        $this->assertInstanceOf(Objects::class, $container);
         $this->assertSame($this->parent, $container->getParent());
         $this->assertInstanceOf('SplObjectStorage', $container->get('foobar'));
     }
@@ -69,7 +69,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return new \ArrayObject();
         }));
         $container = $this->object->build($this->parent);
-        $this->assertInstanceOf('Caridea\Container\Objects', $container);
+        $this->assertInstanceOf(Objects::class, $container);
         $this->assertSame($this->parent, $container->getParent());
         $this->assertTrue($called);
         $component = $container->get('foobar');
@@ -89,7 +89,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return new \ArrayObject();
         }));
         $container = $this->object->build($this->parent);
-        $this->assertInstanceOf('Caridea\Container\Objects', $container);
+        $this->assertInstanceOf(Objects::class, $container);
         $this->assertSame($this->parent, $container->getParent());
         $this->assertFalse($called);
         $component = $container->get('foobar');
@@ -110,7 +110,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return new \ArrayObject();
         }));
         $container = $this->object->build($this->parent);
-        $this->assertInstanceOf('Caridea\Container\Objects', $container);
+        $this->assertInstanceOf(Objects::class, $container);
         $this->assertSame($this->parent, $container->getParent());
         $this->assertFalse($called);
         $component = $container->get('foobar');
