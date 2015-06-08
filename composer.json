@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A shrimp of a dependency injection library",
     "keywords": ["dependency injection", "di", "inversion of control", "ioc"],
-    "version": "0.1.0",
+    "version": "0.2.0-dev",
     "homepage": "http://github.com/libreworks/caridea-container",
     "license": "Apache-2.0",
     "authors": [

@@ -1,19 +1,19 @@
 <?php
 /**
  * Caridea
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
@@ -21,7 +21,7 @@ namespace Caridea\Container;
 
 /**
  * A concrete, immutable dependency injection container with event publishing capabilities.
- * 
+ *
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
@@ -38,10 +38,10 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
     
     /**
      * Creates a new Object container.
-     * 
+     *
      * You might find it easier to use the `Builder` instead of this
      * constructor. Compare this first example…
-     * 
+     *
      * ```php
      * $props = new \Caridea\Container\Properties([
      *     'mail.host' => 'mail.example.net'
@@ -55,9 +55,9 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      *     }, false)
      * ], $props);
      * ```
-     * 
+     *
      * …to this one:
-     * 
+     *
      * ```php
      * $props = new \Caridea\Container\Properties([
      *     'mail.host' => 'mail.example.net'
@@ -71,7 +71,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      *     })
      *     ->build($props);
      * ```
-     * 
+     *
      * @param \Caridea\Container\Provider[] $providers with names as keys
      * @param \Caridea\Container\Container $parent An optional parent container
      */
@@ -90,7 +90,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
     
     /**
      * Creates a new Builder.
-     * 
+     *
      * @return \Caridea\Container\Builder A new `Objects` builder
      */
     public static function builder()
@@ -104,7 +104,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
         $type = $this->types[$name];
         if (!($value instanceof $type)) {
             throw new \UnexpectedValueException("The value that came from the "
-                . "provider was supposed to be a $type, but it returned a " 
+                . "provider was supposed to be a $type, but it returned a "
                 . (is_object($value) ? get_class($value) : gettype($value)));
         }
         if ($value instanceof \Caridea\Event\Listener) {
