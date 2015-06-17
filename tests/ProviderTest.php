@@ -41,7 +41,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($type, $object->getType());
         $this->assertTrue($object->isSingleton());
         $instance = $object->get($stub);
-        $this->assertInstanceOf('\ArrayAccess', $instance);
+        $this->assertInstanceOf('\ArrayObject', $instance);
         $this->assertSame($instance, $object->get($stub));
     }
 
@@ -62,8 +62,25 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($type, $object->getType());
         $this->assertFalse($object->isSingleton());
         $instance = $object->get($stub);
-        $this->assertInstanceOf('\ArrayAccess', $instance);
+        $this->assertInstanceOf('\ArrayObject', $instance);
         $this->assertNotSame($instance, $object->get($stub));
+    }
+    
+    /**
+     * @covers Caridea\Container\Provider::__construct
+     * @covers Caridea\Container\Provider::getType
+     */
+    public function testInterface()
+    {
+        $type = 'ArrayAccess';
+        $object = new Provider($type, function($c) {
+            return new \ArrayObject([1, 2, 3]);
+        }, true);
+        $stub = $this->getMockBuilder(Container::class)
+                        ->getMock();
+        $this->assertSame($type, $object->getType());
+        $instance = $object->get($stub);
+        $this->assertInstanceOf('\ArrayAccess', $instance);
     }
     
     /**
@@ -86,7 +103,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "type" parameter must be a class that exists
+     * @expectedExceptionMessage Unknown class or interface: 'Caridea\Container\Foo'
      */
     public function testConstructor3()
     {

@@ -49,8 +49,8 @@ class Provider
      */
     public function __construct($type, $factory, $singleton = true)
     {
-        if (!class_exists($type)) {
-            throw new \InvalidArgumentException('"type" parameter must be a class that exists');
+        if (!class_exists($type) && !interface_exists($type)) {
+            throw new \InvalidArgumentException("Unknown class or interface: '$type'");
         }
         $this->type = $type;
         if (!is_object($factory) || !method_exists($factory, '__invoke')) {
