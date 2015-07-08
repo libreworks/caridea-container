@@ -11,6 +11,10 @@ The `Caridea\Container\Objects` class allows for eager, lazy, and prototype obje
 
 You can retrieve contained objects both by name and by type!
 
+[![Build Status](https://travis-ci.org/libreworks/caridea-container.svg)](https://travis-ci.org/libreworks/caridea-container)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
+
 ## Installation
 
 You can install this library using Composer:
