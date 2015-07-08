@@ -42,7 +42,7 @@ $config = [
     'mail.host' => '192.168.1.100'
 ];
 $properties = new \Caridea\Container\Properties($config);
-$objects = \Caridea\Container\Objects::build()
+$objects = \Caridea\Container\Objects::builder()
     ->eager('mongoClient', 'MongoClient', function($c){
         return new \MongoClient($c['db.uri']);
     })
@@ -65,12 +65,12 @@ $userService = $objects->get('userService');
 You can nest Objects containers. For example, you can have a container with service objects and a child container with web controllers.
 
 ```php
-$services = \Caridea\Container\Objects::build()
+$services = \Caridea\Container\Objects::builder()
     ->eager('blogService', 'My\Blog\Service', function($c){
         return new \My\Blog\Service();
     })
     ->build();
-$controllers = \Caridea\Container\Objects::build()
+$controllers = \Caridea\Container\Objects::builder()
     ->eager('blogController', 'My\Blog\Controller', function($c){
         return new \My\Blog\Controller($c['blogService']);
     })
@@ -82,7 +82,7 @@ $controllers = $controllers->getByType('My\Blog\Controller'); // ['blogControlle
 ### Events
 
 ```php
-$objects = \Caridea\Container\Objects::build()
+$objects = \Caridea\Container\Objects::builder()
     ->eager('eventListener', 'My\Cool\EventListener', function($c){
         // we are assuming that this class implements Caridea\Event\Listener
         return new \My\Cool\EventListener();
