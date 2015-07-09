@@ -32,6 +32,9 @@ namespace Caridea\Container;
  */
 class Properties extends AbstractContainer
 {
+    /**
+     * @var array The stored properties
+     */
     protected $values = [];
     
     /**
@@ -87,6 +90,11 @@ class Properties extends AbstractContainer
         return get_class($v);
     }
     
+    /**
+     * Retrieves the value
+     *
+     * @param string $name The value name
+     */
     protected function doGet($name)
     {
         return isset($this->values[$name]) ? $this->values[$name] : null;

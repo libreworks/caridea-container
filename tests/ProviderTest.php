@@ -73,7 +73,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     public function testInterface()
     {
         $type = 'ArrayAccess';
-        $object = new Provider($type, function($c) {
+        $object = new Provider($type, function ($c) {
             return new \ArrayObject([1, 2, 3]);
         }, true);
         $stub = $this->getMockBuilder(Container::class)

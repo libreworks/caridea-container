@@ -32,7 +32,7 @@ class Builder
      */
     protected $providers = [];
     /**
-     * @var Provider[] Array of eager `Provider`s
+     * @var string[] Array of eager `Provider` names
      */
     protected $eager = [];
     
@@ -69,7 +69,7 @@ class Builder
     public function eager($name, $type, $factory)
     {
         $provider = new Provider($type, $factory);
-        $this->eager[] = $provider;
+        $this->eager[] = $name;
         return $this->addProvider($name, $provider);
     }
     
@@ -126,7 +126,7 @@ class Builder
         $container = new Objects($this->providers, $parent);
         if ($this->eager) {
             foreach ($this->eager as $v) {
-                $v->get($container);
+                $container->get($v);
             }
         }
         $this->providers = [];

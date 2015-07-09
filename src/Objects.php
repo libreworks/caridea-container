@@ -98,6 +98,11 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
         return new Builder();
     }
     
+    /**
+     * Retrieves the value
+     *
+     * @param string $name The value name
+     */
     protected function doGet($name)
     {
         $value = $this->providers[$name]->get($this);
@@ -114,6 +119,11 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
         return $value;
     }
     
+    /**
+     * Queues an event to be sent to Listeners.
+     *
+     * @param \Caridea\Event\Event $event The event to publish
+     */
     public function publish(\Caridea\Event\Event $event)
     {
         foreach ($this->listeners as $listener) {

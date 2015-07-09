@@ -81,7 +81,9 @@ class Provider
     }
     
     /**
-     * @return boolean whether this provider always returns the same value
+     * Whether this provider always returns the same instance.
+     *
+     * @return boolean True if this provider always returns the same instance
      */
     public function isSingleton()
     {
@@ -89,6 +91,8 @@ class Provider
     }
 
     /**
+     * Gets the type of instance.
+     *
      * @return string gets the type of this instance
      */
     public function getType()

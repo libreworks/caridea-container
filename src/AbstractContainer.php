@@ -28,7 +28,7 @@ namespace Caridea\Container;
 abstract class AbstractContainer implements Container
 {
     /**
-     * @var Container
+     * @var Container The parent container
      */
     protected $parent;
     /**
@@ -52,12 +52,25 @@ abstract class AbstractContainer implements Container
         $this->parent = $parent;
     }
     
+    /**
+     * Whether this container or its parent contains a component with the given name.
+     *
+     * @param string $name The component name
+     * @return boolean
+     */
     public function contains($name)
     {
         return isset($this->types[$name]) ||
             ($this->parent ? $this->parent->contains($name) : false);
     }
-
+    
+    /**
+     * Whether this container or its parent contains a component with the given type.
+     *
+     * @param string $type The name of a class or one of PHP's language types
+     *     (i.e. bool, int, float, string, array, resource)
+     * @return boolean
+     */
     public function containsType($type)
     {
         if ($type === null) {
@@ -72,12 +85,32 @@ abstract class AbstractContainer implements Container
         return $this->parent ? $this->parent->containsType($type) : false;
     }
     
+    /**
+     * Gets a component by name.
+     *
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
+     *
+     * @param string $name The component name
+     * @return mixed The component or null if the name isn't registered
+     */
     public function get($name)
     {
         return isset($this->types[$name]) ? $this->doGet($name) :
             ($this->parent ? $this->parent->get($name) : null);
     }
 
+    /**
+     * Gets the components in the contanier for the given type.
+     *
+     * The parent container is called first, then any values of this container
+     * are appended to the array. Values in this container supercede any with
+     * duplicate names in the parent.
+     *
+     * @param string $type The name of a class or one of PHP's language types
+     *     (i.e. bool, int, float, string, array, resource)
+     * @return array keys are component names, values are components themselves
+     */
     public function getByType($type)
     {
         if ($type === null) {
@@ -100,16 +133,36 @@ abstract class AbstractContainer implements Container
      */
     abstract protected function doGet($name);
     
+    /**
+     * Gets all registered component names (excluding any in the parent container).
+     *
+     * @return array of strings
+     */
     public function getNames()
     {
         return array_keys($this->types);
     }
 
+    /**
+     * Gets the parent container.
+     *
+     * @return Container
+     */
     public function getParent()
     {
         return $this->parent;
     }
-
+    
+    /**
+     * Gets the type of component with the given name.
+     *
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
+     *
+     * @param string $name The component name
+     * @return string The component type, either a class name or one of PHP's language types
+     *     (i.e. bool, int, float, string, array, resource)
+     */
     public function getType($name)
     {
         return isset($this->types[$name]) ? $this->types[$name] :
