@@ -124,7 +124,7 @@ class Builder
     public function build(Container $parent = null)
     {
         $container = new Objects($this->providers, $parent);
-        if ($this->eager) {
+        if (!empty($this->eager)) {
             foreach ($this->eager as $v) {
                 $container->get($v);
             }
