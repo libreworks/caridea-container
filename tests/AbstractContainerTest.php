@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015 LibreWorks contributors
+ * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
 namespace Caridea\Container;
@@ -87,6 +87,17 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['config.var' => 'foobar'], $this->object->getByType('string'));
         $this->assertEquals([], $this->object->getByType('SplObjectStorage'));
         $this->assertEquals([], $this->object->getByType(null));
+    }
+    
+    /**
+     * @covers Caridea\Container\AbstractContainer::getFirst
+     */
+    public function testGetFirst()
+    {
+        $this->assertEquals($this->instance, $this->object->getFirst('SplQueue'));
+        $this->assertEquals('foobar', $this->object->getFirst('string'));
+        $this->assertNull($this->object->getFirst('SplObjectStorage'));
+        $this->assertNull($this->object->getFirst(null));
     }
 
     /**

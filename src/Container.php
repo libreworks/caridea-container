@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015 LibreWorks contributors
+ * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
 namespace Caridea\Container;
@@ -22,7 +22,7 @@ namespace Caridea\Container;
 /**
  * Dependency injection container.
  *
- * @copyright 2015 LibreWorks contributors
+ * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
 interface Container
@@ -31,7 +31,7 @@ interface Container
      * Whether this container or its parent contains a component with the given name.
      *
      * @param string $name The component name
-     * @return boolean
+     * @return bool
      */
     public function contains($name);
 
@@ -40,7 +40,7 @@ interface Container
      *
      * @param string $type The name of a class or one of PHP's language types
      *     (i.e. bool, int, float, string, array, resource)
-     * @return boolean
+     * @return bool
      */
     public function containsType($type);
 
@@ -67,6 +67,18 @@ interface Container
      * @return array keys are component names, values are components themselves
      */
     public function getByType($type);
+    
+    /**
+     * Gets the first compenent found by type.
+     *
+     * If this container doesn't have a value of the type, it will delegate to
+     * its parent.
+     *
+     * @param string $type The name of a class or one of PHP's language types
+     *     (i.e. bool, int, float, string, array, resource)
+     * @return mixed The component or null if one isn't registered
+     */
+    public function getFirst($type);
 
     /**
      * Gets all registered component names (excluding any in the parent container).

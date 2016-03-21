@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015 LibreWorks contributors
+ * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
 namespace Caridea\Container;
@@ -22,7 +22,7 @@ namespace Caridea\Container;
 /**
  * Abstract dependency injection container.
  *
- * @copyright 2015 LibreWorks contributors
+ * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
 abstract class AbstractContainer implements Container
@@ -38,7 +38,7 @@ abstract class AbstractContainer implements Container
     /**
      * @var string[] the list of PHP native types
      */
-    protected static $primatives = ['array', 'bool', 'float', 'int', 'resource', 'string'];
+    protected static $primitives = ['array', 'bool', 'float', 'int', 'resource', 'string'];
     
     /**
      * Creates a new AbstractContainer.
@@ -56,7 +56,7 @@ abstract class AbstractContainer implements Container
      * Whether this container or its parent contains a component with the given name.
      *
      * @param string $name The component name
-     * @return boolean
+     * @return bool
      */
     public function contains($name)
     {
@@ -69,14 +69,14 @@ abstract class AbstractContainer implements Container
      *
      * @param string $type The name of a class or one of PHP's language types
      *     (i.e. bool, int, float, string, array, resource)
-     * @return boolean
+     * @return bool
      */
     public function containsType($type)
     {
         if ($type === null) {
             return false;
         }
-        $isObject = !in_array($type, self::$primatives, true);
+        $isObject = !in_array($type, self::$primitives, true);
         foreach ($this->types as $ctype) {
             if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
                 return true;
@@ -117,7 +117,7 @@ abstract class AbstractContainer implements Container
             return [];
         }
         $components = $this->parent ? $this->parent->getByType($type) : [];
-        $isObject = !in_array($type, self::$primatives, true);
+        $isObject = !in_array($type, self::$primitives, true);
         foreach ($this->types as $name => $ctype) {
             if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
                 $components[$name] = $this->doGet($name);
@@ -125,7 +125,31 @@ abstract class AbstractContainer implements Container
         }
         return $components;
     }
-    
+
+    /**
+     * Gets the first compenent found by type.
+     *
+     * If this container doesn't have a value of the type, it will delegate to
+     * its parent.
+     *
+     * @param string $type The name of a class or one of PHP's language types
+     *     (i.e. bool, int, float, string, array, resource)
+     * @return mixed The component or null if one isn't registered
+     */
+    public function getFirst($type)
+    {
+        if ($type === null) {
+            return null;
+        }
+        $isObject = !in_array($type, self::$primitives, true);
+        foreach ($this->types as $name => $ctype) {
+            if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
+                return $this->doGet($name);
+            }
+        }
+        return $this->parent ? $this->parent->getFirst($type) : null;
+    }
+
     /**
      * Retrieves the value
      *
