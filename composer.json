@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.0.0",
-	"caridea/event": "dev-master"
+	"caridea/event": "^2.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.2.0"
