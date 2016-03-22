@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -58,7 +59,7 @@ abstract class AbstractContainer implements Container
      * @param string $name The component name
      * @return bool
      */
-    public function contains($name)
+    public function contains(string $name): bool
     {
         return isset($this->types[$name]) ||
             ($this->parent ? $this->parent->contains($name) : false);
@@ -71,7 +72,7 @@ abstract class AbstractContainer implements Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return bool
      */
-    public function containsType($type)
+    public function containsType(string $type): bool
     {
         if ($type === null) {
             return false;
@@ -94,7 +95,7 @@ abstract class AbstractContainer implements Container
      * @param string $name The component name
      * @return mixed The component or null if the name isn't registered
      */
-    public function get($name)
+    public function get(string $name)
     {
         return isset($this->types[$name]) ? $this->doGet($name) :
             ($this->parent ? $this->parent->get($name) : null);
@@ -111,11 +112,8 @@ abstract class AbstractContainer implements Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return array keys are component names, values are components themselves
      */
-    public function getByType($type)
+    public function getByType(string $type): array
     {
-        if ($type === null) {
-            return [];
-        }
         $components = $this->parent ? $this->parent->getByType($type) : [];
         $isObject = !in_array($type, self::$primitives, true);
         foreach ($this->types as $name => $ctype) {
@@ -136,11 +134,8 @@ abstract class AbstractContainer implements Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return mixed The component or null if one isn't registered
      */
-    public function getFirst($type)
+    public function getFirst(string $type)
     {
-        if ($type === null) {
-            return null;
-        }
         $isObject = !in_array($type, self::$primitives, true);
         foreach ($this->types as $name => $ctype) {
             if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
@@ -155,14 +150,14 @@ abstract class AbstractContainer implements Container
      *
      * @param string $name The value name
      */
-    abstract protected function doGet($name);
+    abstract protected function doGet(string $name);
     
     /**
      * Gets all registered component names (excluding any in the parent container).
      *
      * @return array of strings
      */
-    public function getNames()
+    public function getNames(): array
     {
         return array_keys($this->types);
     }
@@ -187,7 +182,7 @@ abstract class AbstractContainer implements Container
      * @return string The component type, either a class name or one of PHP's language types
      *     (i.e. bool, int, float, string, array, resource)
      */
-    public function getType($name)
+    public function getType(string $name)
     {
         return isset($this->types[$name]) ? $this->types[$name] :
             ($this->parent ? $this->parent->getType($name) : null);

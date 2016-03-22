@@ -15,6 +15,8 @@ You can retrieve contained objects both by name and by type!
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
 
+We've also included `.hhi` files for the Hack typechecker.
+
 ## Installation
 
 You can install this library using Composer:
@@ -23,7 +25,8 @@ You can install this library using Composer:
 $ composer require caridea/container
 ```
 
-This project requires PHP 5.5 and depends on `caridea/event`.
+* The master branch (version 2.x) of this project requires PHP 7.0 and depends on `caridea/event`.
+* Version 1.x of this project requires PHP 5.5 and depends on `caridea/event`.
 
 ## Compliance
 

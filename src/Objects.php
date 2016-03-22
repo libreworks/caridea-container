@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -93,7 +94,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      *
      * @return \Caridea\Container\Builder A new `Objects` builder
      */
-    public static function builder()
+    public static function builder(): Builder
     {
         return new Builder();
     }
@@ -103,7 +104,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      *
      * @param string $name The value name
      */
-    protected function doGet($name)
+    protected function doGet(string $name)
     {
         $value = $this->providers[$name]->get($this);
         $type = $this->types[$name];

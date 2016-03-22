@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -33,7 +34,7 @@ interface Container
      * @param string $name The component name
      * @return bool
      */
-    public function contains($name);
+    public function contains(string $name): bool;
 
     /**
      * Whether this container or its parent contains a component with the given type.
@@ -42,7 +43,7 @@ interface Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return bool
      */
-    public function containsType($type);
+    public function containsType(string $type): bool;
 
     /**
      * Gets a component by name.
@@ -53,7 +54,7 @@ interface Container
      * @param string $name The component name
      * @return mixed The component or null if the name isn't registered
      */
-    public function get($name);
+    public function get(string $name);
 
     /**
      * Gets the components in the contanier for the given type.
@@ -66,7 +67,7 @@ interface Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return array keys are component names, values are components themselves
      */
-    public function getByType($type);
+    public function getByType(string $type): array;
     
     /**
      * Gets the first compenent found by type.
@@ -78,14 +79,14 @@ interface Container
      *     (i.e. bool, int, float, string, array, resource)
      * @return mixed The component or null if one isn't registered
      */
-    public function getFirst($type);
+    public function getFirst(string $type);
 
     /**
      * Gets all registered component names (excluding any in the parent container).
      *
      * @return array of strings
      */
-    public function getNames();
+    public function getNames(): array;
 
     /**
      * Gets the parent container.
@@ -104,5 +105,5 @@ interface Container
      * @return string The component type, either a class name or one of PHP's language types
      *     (i.e. bool, int, float, string, array, resource)
      */
-    public function getType($name);
+    public function getType(string $name);
 }

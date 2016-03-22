@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -46,7 +47,7 @@ class Builder
      * @param \Caridea\Container\Provider $provider The provider
      * @return $this provides a fluent interface
      */
-    public function addProvider($name, Provider $provider)
+    public function addProvider(string $name, Provider $provider): self
     {
         $this->providers[$name] = $provider;
         return $this;
@@ -66,7 +67,7 @@ class Builder
      * @param object $factory A `Closure` or class with an `__invoke` method to return the component
      * @return $this provides a fluent interface
      */
-    public function eager($name, $type, $factory)
+    public function eager(string $name, string $type, $factory): self
     {
         $provider = new Provider($type, $factory);
         $this->eager[] = $name;
@@ -87,7 +88,7 @@ class Builder
      * @param object $factory A `Closure` or class with an `__invoke` method to return the component
      * @return $this provides a fluent interface
      */
-    public function lazy($name, $type, $factory)
+    public function lazy(string $name, string $type, $factory): self
     {
         return $this->addProvider($name, new Provider($type, $factory));
     }
@@ -106,7 +107,7 @@ class Builder
      * @param object $factory A `Closure` or class with an `__invoke` method to return the component
      * @return $this provides a fluent interface
      */
-    public function proto($name, $type, $factory)
+    public function proto(string $name, string $type, $factory): self
     {
         return $this->addProvider($name, new Provider($type, $factory, false));
     }
@@ -121,7 +122,7 @@ class Builder
      * @param Container $parent An optional parent container
      * @return Objects The constructed `Objects` container
      */
-    public function build(Container $parent = null)
+    public function build(Container $parent = null): Objects
     {
         $container = new Objects($this->providers, $parent);
         if (!empty($this->eager)) {

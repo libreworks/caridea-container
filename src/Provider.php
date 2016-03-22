@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -47,7 +48,7 @@ class Provider
     /**
      * @internal
      */
-    public function __construct($type, $factory, $singleton = true)
+    public function __construct(string $type, $factory, bool $singleton = true)
     {
         if (!class_exists($type) && !interface_exists($type)) {
             throw new \InvalidArgumentException("Unknown class or interface: '$type'");
@@ -85,7 +86,7 @@ class Provider
      *
      * @return bool True if this provider always returns the same instance
      */
-    public function isSingleton()
+    public function isSingleton(): bool
     {
         return $this->singleton;
     }
@@ -95,7 +96,7 @@ class Provider
      *
      * @return string gets the type of this instance
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }

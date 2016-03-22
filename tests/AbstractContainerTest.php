@@ -62,7 +62,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsType()
     {
-        $this->assertFalse($this->object->containsType(null));
+        $this->assertFalse($this->object->containsType(''));
         $this->assertTrue($this->object->containsType('SplQueue'));
         $this->assertTrue($this->object->containsType('string'));
         $this->assertFalse($this->object->containsType('SplObjectStorage'));
@@ -86,7 +86,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['myQueue' => $this->instance], $this->object->getByType('SplQueue'));
         $this->assertEquals(['config.var' => 'foobar'], $this->object->getByType('string'));
         $this->assertEquals([], $this->object->getByType('SplObjectStorage'));
-        $this->assertEquals([], $this->object->getByType(null));
+        $this->assertEquals([], $this->object->getByType(''));
     }
     
     /**
@@ -97,7 +97,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->instance, $this->object->getFirst('SplQueue'));
         $this->assertEquals('foobar', $this->object->getFirst('string'));
         $this->assertNull($this->object->getFirst('SplObjectStorage'));
-        $this->assertNull($this->object->getFirst(null));
+        $this->assertNull($this->object->getFirst(''));
     }
 
     /**
@@ -139,7 +139,7 @@ class OneInstanceContainer extends \Caridea\Container\AbstractContainer
         parent::__construct([$name => $type == 'object' ? get_class($instance) : $type], $parent);
     }
     
-    protected function doGet($name)
+    protected function doGet(string $name)
     {
         return $this->instance;
     }

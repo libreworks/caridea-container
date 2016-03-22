@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -52,7 +53,7 @@ class Properties extends AbstractContainer
      * ]);
      * ```
      *
-     * @param array $properties String keys, mixed values.
+     * @param array<string,mixed> $properties String keys, mixed values.
      * @param \Caridea\Container\Container $parent An optional parent container.
      */
     public function __construct(array $properties, Container $parent = null)
@@ -72,7 +73,7 @@ class Properties extends AbstractContainer
      *
      * @param mixed $v The value to evaluate
      */
-    protected static function typeof($v)
+    protected static function typeof($v): string
     {
         if (is_bool($v)) {
             return 'bool';
@@ -95,7 +96,7 @@ class Properties extends AbstractContainer
      *
      * @param string $name The value name
      */
-    protected function doGet($name)
+    protected function doGet(string $name)
     {
         return isset($this->values[$name]) ? $this->values[$name] : null;
     }
