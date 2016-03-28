@@ -55,4 +55,9 @@ abstract class AbstractContainer implements \Caridea\Container\Container
     {
         return null;
     }
+
+    public function named<T>(string $name, classname<T> $type): T
+    {
+        throw new \Exception();
+    }
 }

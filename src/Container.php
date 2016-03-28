@@ -106,4 +106,20 @@ interface Container
      *     (i.e. bool, int, float, string, array, resource)
      */
     public function getType(string $name);
+
+    /**
+     * Gets a component by name and ensures its type.
+     *
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
+     * 
+     * If the value isn't an instance of the type provided, an exception is
+     * thrown, including when the value is `null`.
+     *
+     * @param string $name The component name
+     * @param string $type The expected type
+     * @return mixed The type-checked component
+     * @throws \UnexpectedValueException if the `$type` doesn't match the value
+     */
+    public function named(string $name, string $type);
 }

@@ -19,4 +19,6 @@ interface Container
     public function getParent(): ?\Caridea\Container\Container;
 
     public function getType(string $name): ?string;
+
+    public function named<T>(string $name, classname<T> $type): T;
 }

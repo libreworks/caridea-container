@@ -126,6 +126,45 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('string', $this->object->getType('config.var'));
         $this->assertNull($this->object->getType('notThere'));
     }
+    
+    /**
+     * @covers Caridea\Container\AbstractContainer::named
+     */
+    public function testNamed()
+    {
+        $this->object->named('myQueue', \SplQueue::class);
+        $this->object->named('config.var', 'string');
+    }
+
+    /**
+     * @covers Caridea\Container\AbstractContainer::named
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage A SplObjectStorage was requested, but a SplQueue was found
+     */
+    public function testNamedBad()
+    {
+        $this->object->named('myQueue', \SplObjectStorage::class);
+    }
+
+    /**
+     * @covers Caridea\Container\AbstractContainer::named
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage A int was requested, but a string was found
+     */
+    public function testNamedBad2()
+    {
+        $this->object->named('config.var', 'int');
+    }
+
+    /**
+     * @covers Caridea\Container\AbstractContainer::named
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage A SplQueue was requested, but null was found
+     */
+    public function testNamedBad3()
+    {
+        $this->object->named('notThere', \SplQueue::class);
+    }
 }
 
 class OneInstanceContainer extends \Caridea\Container\AbstractContainer

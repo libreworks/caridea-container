@@ -187,4 +187,33 @@ abstract class AbstractContainer implements Container
         return isset($this->types[$name]) ? $this->types[$name] :
             ($this->parent ? $this->parent->getType($name) : null);
     }
+
+    /**
+     * Gets a component by name and ensures its type.
+     *
+     * If this container doesn't have a value for that name, it will delegate to
+     * its parent.
+     * 
+     * If the value isn't an instance of the type provided, an exception is
+     * thrown, including when the value is `null`.
+     *
+     * @param string $name The component name
+     * @param string $type The expected type
+     * @return mixed The type-checked component
+     * @throws \UnexpectedValueException if the `$type` doesn't match the value
+     */
+    public function named(string $name, string $type)
+    {
+        if (isset($this->types[$name])) {
+            $ctype = $this->types[$name];
+            $isObject = !in_array($type, self::$primitives, true);
+            if ($type !== $ctype && (!$isObject || !is_a($ctype, $type, true))) {
+                throw new \UnexpectedValueException("A $type was requested, but a $ctype was found");
+            }
+            return $this->doGet($name);
+        } elseif ($this->parent !== null) {
+            return $this->parent->named($name, $type);
+        }
+        throw new \UnexpectedValueException("A $type was requested, but null was found");
+    }
 }
