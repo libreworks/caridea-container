@@ -3,13 +3,7 @@ Caridea is a miniscule PHP application library. This shrimpy fellow is what you'
 
 ![](http://libreworks.com/caridea-100.png)
 
-This is its dependency injection container. We included two containers.
-
-The `Caridea\Container\Properties` class is intended for scalar configuration values that might be used as settings for other components.
-
-The `Caridea\Container\Objects` class allows for eager, lazy, and prototype objects. It also implements `Caridea\Event\Publisher` and will broadcast events to any managed object which implements `Caridea\Event\Listener`.
-
-You can retrieve contained objects both by name and by type!
+This is its dependency injection container.
 
 [![Packagist](https://img.shields.io/packagist/v/caridea/container.svg)](https://packagist.org/packages/caridea/container)
 [![Build Status](https://travis-ci.org/libreworks/caridea-container.svg)](https://travis-ci.org/libreworks/caridea-container)
@@ -34,6 +28,15 @@ $ composer require caridea/container
 Releases of this library will conform to [Semantic Versioning](http://semver.org).
 
 Our code is intended to comply with [PSR-1](http://www.php-fig.org/psr/psr-1/), [PSR-2](http://www.php-fig.org/psr/psr-2/), and [PSR-4](http://www.php-fig.org/psr/psr-4/). If you find any issues related to standards compliance, please send a pull request!
+
+## Overview
+
+* The `Caridea\Container\Properties` class is intended for scalar configuration values that might be used as settings for other components.
+* The `Caridea\Container\Objects` class allows for eager, lazy, and prototype objects.
+   * It also implements `Caridea\Event\Publisher` and will broadcast events to any managed object which implements `Caridea\Event\Listener`.
+* The `Caridea\Container\EmptyContainer` class is an empty, no-op container.
+
+You can retrieve contained objects both by name and by type!
 
 ## Examples
 
@@ -63,10 +66,6 @@ $objects = \Caridea\Container\Objects::builder()
 
 $userService = $objects->get('userService');
 ```
-
-* `\Caridea\Container\Properties` is meant to hold static, scalar properties.
-* `\Caridea\Container\Objects` is meant to hold complex objects with dependencies.
-* `\Caridea\Container\EmptyContainer` is an empty, no-op container.
 
 ### Parent Delegation
 
@@ -102,11 +101,11 @@ $objects->publish(new CustomEvent());
 // Here, the eventListener object will have its ->notify() method invoked with the CustomEvent
 ```
 
-Any objects returned from `get()` that implement `\Caridea\Event\PublisherAware` will receive the container via the `setPublisher` method.
+Any objects returned from an `Objects` container that implement `\Caridea\Event\PublisherAware` will receive the container via the `setPublisher` method.
 
 ### ContainerAware
 
-Any objects returned from `get()` which implement `\Caridea\Container\ContainerAware` will receive the container via the `setContainer` method.
+Any objects returned from an `Objects` container that implement `\Caridea\Container\ContainerAware` will receive the container via the `setContainer` method.
 We provide a trait to make this easier.
 
 ```php
