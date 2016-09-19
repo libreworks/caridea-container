@@ -36,7 +36,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      * @var \SplObjectStorage A collection of event listeners
      */
     protected $listeners;
-    
+
     /**
      * Creates a new Object container.
      *
@@ -88,7 +88,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
         parent::__construct($types, $parent);
         $this->listeners = new \SplObjectStorage();
     }
-    
+
     /**
      * Creates a new Builder.
      *
@@ -98,7 +98,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
     {
         return new Builder();
     }
-    
+
     /**
      * Retrieves the value
      *
@@ -113,13 +113,19 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
                 . "provider was supposed to be a $type, but it returned a "
                 . (is_object($value) ? get_class($value) : gettype($value)));
         }
+        if ($value instanceof ContainerAware) {
+            $value->setContainer($this);
+        }
+        if ($value instanceof \Caridea\Event\PublisherAware) {
+            $value->setPublisher($this);
+        }
         if ($value instanceof \Caridea\Event\Listener) {
             // SplObjectStorage is a set; it will only ever contain uniques
             $this->listeners->attach($value);
         }
         return $value;
     }
-    
+
     /**
      * Queues an event to be sent to Listeners.
      *

@@ -28,12 +28,12 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
      * @var AbstractContainer
      */
     protected $object;
-    
+
     /**
      * @var Container
      */
     protected $parent;
-    
+
     protected $instance;
 
     /**
@@ -88,7 +88,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->object->getByType('SplObjectStorage'));
         $this->assertEquals([], $this->object->getByType(''));
     }
-    
+
     /**
      * @covers Caridea\Container\AbstractContainer::getFirst
      */
@@ -126,7 +126,7 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('string', $this->object->getType('config.var'));
         $this->assertNull($this->object->getType('notThere'));
     }
-    
+
     /**
      * @covers Caridea\Container\AbstractContainer::named
      */
@@ -170,14 +170,14 @@ class AbstractContainerTest extends \PHPUnit_Framework_TestCase
 class OneInstanceContainer extends \Caridea\Container\AbstractContainer
 {
     private $instance;
-    
+
     public function __construct($name, $instance, $parent = null)
     {
         $this->instance = $instance;
         $type = gettype($instance);
         parent::__construct([$name => $type == 'object' ? get_class($instance) : $type], $parent);
     }
-    
+
     protected function doGet(string $name)
     {
         return $this->instance;

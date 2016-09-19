@@ -11,9 +11,14 @@
             "homepage": "https://github.com/libreworks/caridea-container/contributors"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2.x-dev"
+        }
+    },
     "require": {
         "php": ">=7.0.0",
-	"caridea/event": "^2.0.0"
+	"caridea/event": "^2.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.2.0"

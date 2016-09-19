@@ -11,6 +11,7 @@ The `Caridea\Container\Objects` class allows for eager, lazy, and prototype obje
 
 You can retrieve contained objects both by name and by type!
 
+[![Packagist](https://img.shields.io/packagist/v/caridea/container.svg)](https://packagist.org/packages/caridea/container)
 [![Build Status](https://travis-ci.org/libreworks/caridea-container.svg)](https://travis-ci.org/libreworks/caridea-container)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
@@ -63,6 +64,10 @@ $objects = \Caridea\Container\Objects::builder()
 $userService = $objects->get('userService');
 ```
 
+* `\Caridea\Container\Properties` is meant to hold static, scalar properties.
+* `\Caridea\Container\Objects` is meant to hold complex objects with dependencies.
+* `\Caridea\Container\EmptyContainer` is an empty, no-op container.
+
 ### Parent Delegation
 
 You can nest Objects containers. For example, you can have a container with service objects and a child container with web controllers.
@@ -95,4 +100,23 @@ $objects = \Caridea\Container\Objects::builder()
 // assuming that CustomEvent implements Caridea\Event\Event
 $objects->publish(new CustomEvent());
 // Here, the eventListener object will have its ->notify() method invoked with the CustomEvent
+```
+
+Any objects returned from `get()` that implement `\Caridea\Event\PublisherAware` will receive the container via the `setPublisher` method.
+
+### ContainerAware
+
+Any objects returned from `get()` which implement `\Caridea\Container\ContainerAware` will receive the container via the `setContainer` method.
+We provide a trait to make this easier.
+
+```php
+class MyContainerAware implements \Caridea\Container\ContainerAware
+{
+    use \Caridea\Container\ContainerSetter;
+
+    public function __construct()
+    {
+        $this->container = new \Caridea\Container\EmptyContainer();
+    }
+}
 ```

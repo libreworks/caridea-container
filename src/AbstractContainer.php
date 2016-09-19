@@ -40,7 +40,7 @@ abstract class AbstractContainer implements Container
      * @var string[] the list of PHP native types
      */
     protected static $primitives = ['array', 'bool', 'float', 'int', 'resource', 'string'];
-    
+
     /**
      * Creates a new AbstractContainer.
      *
@@ -52,7 +52,7 @@ abstract class AbstractContainer implements Container
         $this->types = $types;
         $this->parent = $parent;
     }
-    
+
     /**
      * Whether this container or its parent contains a component with the given name.
      *
@@ -64,7 +64,7 @@ abstract class AbstractContainer implements Container
         return isset($this->types[$name]) ||
             ($this->parent ? $this->parent->contains($name) : false);
     }
-    
+
     /**
      * Whether this container or its parent contains a component with the given type.
      *
@@ -74,9 +74,6 @@ abstract class AbstractContainer implements Container
      */
     public function containsType(string $type): bool
     {
-        if ($type === null) {
-            return false;
-        }
         $isObject = !in_array($type, self::$primitives, true);
         foreach ($this->types as $ctype) {
             if ($type === $ctype || ($isObject && is_a($ctype, $type, true))) {
@@ -85,7 +82,7 @@ abstract class AbstractContainer implements Container
         }
         return $this->parent ? $this->parent->containsType($type) : false;
     }
-    
+
     /**
      * Gets a component by name.
      *
@@ -151,7 +148,7 @@ abstract class AbstractContainer implements Container
      * @param string $name The value name
      */
     abstract protected function doGet(string $name);
-    
+
     /**
      * Gets all registered component names (excluding any in the parent container).
      *
@@ -171,7 +168,7 @@ abstract class AbstractContainer implements Container
     {
         return $this->parent;
     }
-    
+
     /**
      * Gets the type of component with the given name.
      *
@@ -193,7 +190,7 @@ abstract class AbstractContainer implements Container
      *
      * If this container doesn't have a value for that name, it will delegate to
      * its parent.
-     * 
+     *
      * If the value isn't an instance of the type provided, an exception is
      * thrown, including when the value is `null`.
      *
