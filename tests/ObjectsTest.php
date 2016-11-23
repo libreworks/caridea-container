@@ -117,4 +117,73 @@ class ObjectsTest extends \PHPUnit_Framework_TestCase implements \Caridea\Event\
     {
         $this->assertNotNull($event);
     }
+
+    public function testNestedNotify()
+    {
+        $providers = [
+            'one' => new Provider(ObjectsTest_Listener::class, function ($c) {
+                return new ObjectsTest_Listener('One');
+            }),
+            'two' => new Provider(ObjectsTest_Listener::class, function ($c) {
+                return new ObjectsTest_NestedListener('Two', $c);
+            }),
+            'three' => new Provider(ObjectsTest_Listener::class, function ($c) {
+                return new ObjectsTest_Listener('Three');
+            })
+        ];
+        $object = new Objects($providers);
+        foreach ($providers as $k => $_) {
+            $object->get($k);
+        }
+        $this->expectOutputString(implode(PHP_EOL, [
+            'I am One and got a Caridea\Container\FooEvent',
+            'I am Two and got a Caridea\Container\FooEvent',
+            'I am One and got a Caridea\Container\NullEvent',
+            'I am Two and got a Caridea\Container\NullEvent',
+            'I am Three and got a Caridea\Container\NullEvent',
+            'I am Three and got a Caridea\Container\FooEvent']) . PHP_EOL);
+        $object->publish(new FooEvent($this));
+    }
+}
+
+class FooEvent extends \Caridea\Event\Event
+{
+}
+
+class NullEvent extends \Caridea\Event\Event
+{
+}
+
+class ObjectsTest_Listener implements \Caridea\Event\Listener
+{
+    private $name;
+
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+    public function notify(\Caridea\Event\Event $event)
+    {
+        echo "I am {$this->name} and got a " . get_class($event), PHP_EOL;
+    }
+}
+
+class ObjectsTest_NestedListener extends ObjectsTest_Listener
+{
+    private $publisher;
+
+    public function __construct($name, Objects $publisher)
+    {
+        parent::__construct($name);
+        $this->publisher = $publisher;
+    }
+
+    public function notify(\Caridea\Event\Event $msg)
+    {
+        parent::notify($msg);
+        if ($msg instanceof FooEvent) {
+            $this->publisher->publish(new NullEvent($this));
+        }
+    }
 }

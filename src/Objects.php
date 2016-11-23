@@ -133,7 +133,7 @@ class Objects extends AbstractContainer implements \Caridea\Event\Publisher
      */
     public function publish(\Caridea\Event\Event $event)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (iterator_to_array($this->listeners) as $listener) {
             $listener->notify($event);
         }
     }
