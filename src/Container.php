@@ -15,21 +15,23 @@ declare(strict_types=1);
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 namespace Caridea\Container;
 
 /**
  * Dependency injection container.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
-interface Container
+interface Container extends \Psr\Container\ContainerInterface
 {
     /**
      * Whether this container or its parent contains a component with the given name.
+     *
+     * (An alias for {@link has()}, left for backward compatibility.)
      *
      * @param string $name The component name
      * @return bool
@@ -46,15 +48,17 @@ interface Container
     public function containsType(string $type): bool;
 
     /**
-     * Gets a component by name.
+     * Finds an entry of the container by its identifier and returns it.
      *
      * If this container doesn't have a value for that name, it will delegate to
      * its parent.
      *
-     * @param string $name The component name
-     * @return mixed The component or null if the name isn't registered
+     * @param string $id Identifier of the entry to look for.
+     * @return mixed The component
+     * @throws \Caridea\Container\Exception\Missing  No entry was found for
+     *     **this** identifier in this container or its parents.
      */
-    public function get(string $name);
+    public function get($id);
 
     /**
      * Gets the components in the contanier for the given type.
@@ -68,7 +72,7 @@ interface Container
      * @return array keys are component names, values are components themselves
      */
     public function getByType(string $type): array;
-    
+
     /**
      * Gets the first compenent found by type.
      *
@@ -112,7 +116,7 @@ interface Container
      *
      * If this container doesn't have a value for that name, it will delegate to
      * its parent.
-     * 
+     *
      * If the value isn't an instance of the type provided, an exception is
      * thrown, including when the value is `null`.
      *

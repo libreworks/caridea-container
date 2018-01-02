@@ -3,14 +3,12 @@ Caridea is a miniscule PHP application library. This shrimpy fellow is what you'
 
 ![](http://libreworks.com/caridea-100.png)
 
-This is its dependency injection container.
+This is its [PSR-11](http://www.php-fig.org/psr/psr-11/) compliant dependency injection container.
 
 [![Packagist](https://img.shields.io/packagist/v/caridea/container.svg)](https://packagist.org/packages/caridea/container)
 [![Build Status](https://travis-ci.org/libreworks/caridea-container.svg)](https://travis-ci.org/libreworks/caridea-container)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-container/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-container/?branch=master)
-
-We've also included `.hhi` files for the Hack typechecker.
 
 ## Installation
 
@@ -20,7 +18,8 @@ You can install this library using Composer:
 $ composer require caridea/container
 ```
 
-* The master branch (version 2.x) of this project requires PHP 7.0 and depends on `caridea/event`.
+* The master branch (version 3.x) of this project requires PHP 7.1 and depends on `caridea/event`.
+* Version 2.x of this project requires PHP 7.0 and depends on `caridea/event`.
 * Version 1.x of this project requires PHP 5.5 and depends on `caridea/event`.
 
 ## Compliance

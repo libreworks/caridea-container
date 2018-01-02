@@ -15,16 +15,16 @@ declare(strict_types=1);
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 namespace Caridea\Container;
 
 /**
  * Abstract dependency injection container.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 abstract class AbstractContainer implements Container
 {
@@ -54,23 +54,15 @@ abstract class AbstractContainer implements Container
     }
 
     /**
-     * Whether this container or its parent contains a component with the given name.
-     *
-     * @param string $name The component name
-     * @return bool
+     * {@inheritDoc}
      */
     public function contains(string $name): bool
     {
-        return isset($this->types[$name]) ||
-            ($this->parent ? $this->parent->contains($name) : false);
+        return $this->has($name);
     }
 
     /**
-     * Whether this container or its parent contains a component with the given type.
-     *
-     * @param string $type The name of a class or one of PHP's language types
-     *     (i.e. bool, int, float, string, array, resource)
-     * @return bool
+     * {@inheritDoc}
      */
     public function containsType(string $type): bool
     {
@@ -84,30 +76,20 @@ abstract class AbstractContainer implements Container
     }
 
     /**
-     * Gets a component by name.
-     *
-     * If this container doesn't have a value for that name, it will delegate to
-     * its parent.
-     *
-     * @param string $name The component name
-     * @return mixed The component or null if the name isn't registered
+     * {@inheritDoc}
      */
-    public function get(string $name)
+    public function get($id)
     {
-        return isset($this->types[$name]) ? $this->doGet($name) :
-            ($this->parent ? $this->parent->get($name) : null);
+        $entry = isset($this->types[$id]) ? $this->doGet($id) :
+            ($this->parent ? $this->parent->get($id) : null);
+        if ($entry === null) {
+            throw new Exception\Missing("No container entry found for key: $id");
+        }
+        return $entry;
     }
 
     /**
-     * Gets the components in the contanier for the given type.
-     *
-     * The parent container is called first, then any values of this container
-     * are appended to the array. Values in this container supercede any with
-     * duplicate names in the parent.
-     *
-     * @param string $type The name of a class or one of PHP's language types
-     *     (i.e. bool, int, float, string, array, resource)
-     * @return array keys are component names, values are components themselves
+     * {@inheritDoc}
      */
     public function getByType(string $type): array
     {
@@ -122,14 +104,7 @@ abstract class AbstractContainer implements Container
     }
 
     /**
-     * Gets the first compenent found by type.
-     *
-     * If this container doesn't have a value of the type, it will delegate to
-     * its parent.
-     *
-     * @param string $type The name of a class or one of PHP's language types
-     *     (i.e. bool, int, float, string, array, resource)
-     * @return mixed The component or null if one isn't registered
+     * {@inheritDoc}
      */
     public function getFirst(string $type)
     {
@@ -140,6 +115,15 @@ abstract class AbstractContainer implements Container
             }
         }
         return $this->parent ? $this->parent->getFirst($type) : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function has($name): bool
+    {
+        return isset($this->types[$name]) ||
+            ($this->parent ? $this->parent->has($name) : false);
     }
 
     /**
