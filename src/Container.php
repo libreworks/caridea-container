@@ -95,9 +95,9 @@ interface Container extends \Psr\Container\ContainerInterface
     /**
      * Gets the parent container.
      *
-     * @return Container
+     * @return Container|null
      */
-    public function getParent();
+    public function getParent(): ?Container;
 
     /**
      * Gets the type of component with the given name.
@@ -106,10 +106,10 @@ interface Container extends \Psr\Container\ContainerInterface
      * its parent.
      *
      * @param string $name The component name
-     * @return string The component type, either a class name or one of PHP's language types
+     * @return string|null The component type, either a class name or one of PHP's language types
      *     (i.e. bool, int, float, string, array, resource)
      */
-    public function getType(string $name);
+    public function getType(string $name): ?string;
 
     /**
      * Gets a component by name and ensures its type.

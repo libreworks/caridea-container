@@ -76,7 +76,7 @@ class EmptyContainer implements Container
     /**
      * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent(): ?Container
     {
         return null;
     }
@@ -84,7 +84,7 @@ class EmptyContainer implements Container
     /**
      * {@inheritDoc}
      */
-    public function getType(string $name)
+    public function getType(string $name): ?string
     {
         return null;
     }

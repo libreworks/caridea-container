@@ -134,9 +134,7 @@ abstract class AbstractContainer implements Container
     abstract protected function doGet(string $name);
 
     /**
-     * Gets all registered component names (excluding any in the parent container).
-     *
-     * @return array of strings
+     * {@inheritDoc}
      */
     public function getNames(): array
     {
@@ -144,44 +142,24 @@ abstract class AbstractContainer implements Container
     }
 
     /**
-     * Gets the parent container.
-     *
-     * @return Container
+     * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent(): ?Container
     {
         return $this->parent;
     }
 
     /**
-     * Gets the type of component with the given name.
-     *
-     * If this container doesn't have a value for that name, it will delegate to
-     * its parent.
-     *
-     * @param string $name The component name
-     * @return string The component type, either a class name or one of PHP's language types
-     *     (i.e. bool, int, float, string, array, resource)
+     * {@inheritDoc}
      */
-    public function getType(string $name)
+    public function getType(string $name): ?string
     {
         return isset($this->types[$name]) ? $this->types[$name] :
             ($this->parent ? $this->parent->getType($name) : null);
     }
 
     /**
-     * Gets a component by name and ensures its type.
-     *
-     * If this container doesn't have a value for that name, it will delegate to
-     * its parent.
-     *
-     * If the value isn't an instance of the type provided, an exception is
-     * thrown, including when the value is `null`.
-     *
-     * @param string $name The component name
-     * @param string $type The expected type
-     * @return mixed The type-checked component
-     * @throws \UnexpectedValueException if the `$type` doesn't match the value
+     * {@inheritDoc}
      */
     public function named(string $name, string $type)
     {

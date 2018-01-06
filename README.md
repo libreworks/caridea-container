@@ -50,13 +50,13 @@ $config = [
 $properties = new \Caridea\Container\Properties($config);
 $objects = \Caridea\Container\Objects::builder()
     ->eager('mongoClient', 'MongoClient', function($c){
-        return new \MongoClient($c['db.uri']);
+        return new \MongoClient($c->get('db.uri'));
     })
     ->lazy('mailService', 'My\Mail\Service', function($c){
-        return new \My\Mail\Service($c['mail.host']);
+        return new \My\Mail\Service($c->('mail.host'));
     })
     ->lazy('userService', 'My\User\Service', function($c){
-        return new \My\User\Service($c['mongoClient'], $c['objectStorage']);
+        return new \My\User\Service($c->get('mongoClient'), $c->get('objectStorage'));
     })
     ->proto('objectStorage', 'SplObjectStorage', function($c){
         return new \SplObjectStorage();
@@ -78,7 +78,7 @@ $services = \Caridea\Container\Objects::builder()
     ->build();
 $controllers = \Caridea\Container\Objects::builder()
     ->eager('blogController', 'My\Blog\Controller', function($c){
-        return new \My\Blog\Controller($c['blogService']);
+        return new \My\Blog\Controller($c->get('blogService'));
     })
     ->build($services);
 

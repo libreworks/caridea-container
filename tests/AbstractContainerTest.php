@@ -49,6 +49,7 @@ class AbstractContainerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers Caridea\Container\AbstractContainer::contains
+     * @covers Caridea\Container\AbstractContainer::has
      */
     public function testContains()
     {
