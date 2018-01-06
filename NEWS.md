@@ -1,5 +1,8 @@
 # Changelog: caridea-container
 
+## 3.0.1
+* Documentation and PHPDoc corrections
+
 ## 3.0.0
 * Upgrade to PHP 7.1
 * Removed HHVM support

@@ -37,6 +37,10 @@ Our code is intended to comply with [PSR-1](http://www.php-fig.org/psr/psr-1/), 
 
 You can retrieve contained objects both by name and by type!
 
+## Documentation
+
+* Head over to [Read the Docs](http://caridea-container.readthedocs.io/en/latest/)
+
 ## Examples
 
 Just a few quick examples.
